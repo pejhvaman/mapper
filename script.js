@@ -13,6 +13,7 @@ const listBtn = document.querySelector('.list-btn');
 class Workout {
   id = (Date.now() + '').slice(-10);
   date = new Date();
+  clicks = 0;
   constructor(coords, distance, duration) {
     this.coords = coords;
     this.distance = distance;
@@ -25,6 +26,11 @@ class Workout {
       months[this.date.getMonth()]
     } ${this.date.getDate()}`;
     return this.description;
+  }
+  //public interface
+  click() {
+    this.clicks++;
+    console.log(this.clicks);
   }
 }
 
@@ -67,6 +73,7 @@ class App {
     inputType.addEventListener('change', this.#toggleType);
     listBtn.addEventListener('click', this.#handleBtn.bind(this));
     containerWorkouts.addEventListener('click', this.#moveMarker.bind(this));
+    this._getLocalStorage();
   }
 
   #listBtnHandler() {
@@ -117,6 +124,9 @@ class App {
     //instead of eventlistener on the map
     this.#map.on('click', this.#showForm.bind(this));
     this.#map.on('movestart', this.#hideForm.bind(this));
+
+    //get data from local storage (in constructor) to show on the map after map is loaded
+    this.#workouts.forEach(w => this.#renderWorkoutOnMap(w));
   }
 
   #showForm(mapE) {
@@ -192,6 +202,25 @@ class App {
 
     //hide form and list and handle show/hide list btn
     this.#hideForm();
+
+    //store workouts in local storage every time we create new workout
+    this._setLocalStorage();
+  }
+
+  _setLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+    if (!data) return;
+    this.#workouts = data;
+    this.#workouts.forEach(w => this.#renderWorkoutOnList(w));
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 
   #renderWorkoutOnMap(workout) {
@@ -235,7 +264,7 @@ class App {
     if (workout.name === 'running') {
       html += `<div class="workout__details">
             <span class="workout__icon">⚡️</span>
-            <span class="workout__value">${workout.pace}</span>
+            <span class="workout__value">${workout.pace.toFixed(2)}</span>
             <span class="workout__unit">min/km</span>
           </div>
           <div class="workout__details">
@@ -248,7 +277,7 @@ class App {
     if (workout.name === 'cycling') {
       html += `<div class="workout__details">
           <span class="workout__icon">⚡️</span>
-          <span class="workout__value">${workout.speed}</span>
+          <span class="workout__value">${workout.speed.toFixed(2)}</span>
           <span class="workout__unit">km/h</span>
         </div>
         <div class="workout__details">
@@ -275,6 +304,9 @@ class App {
         duration: 1,
       },
     });
+    //working with pubkic interface
+    // workout.click();
+    //local storage objects had lost their prototype
   }
 
   #toggleType() {
