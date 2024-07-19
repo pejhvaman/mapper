@@ -15,7 +15,7 @@
 }
 
 html {
-  font-size: 42.5%;
+  font-size: 48%;
   box-sizing: border-box;
 }
 
@@ -132,9 +132,29 @@ a:visited {
 }
 
 .workout__icon {
-  font-size: 1.8rem;
   margin-right: 0.2rem;
-  height: 0.28rem;
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+.workout--running .workout__icon:first-child,
+.workout--cycling .workout__icon:first-child {
+  background-image: url(running.png);
+}
+.workout--running .workout__icon:nth-child(2),
+.workout--cycling .workout__icon:nth-child(2) {
+  background-image: url(duration.png);
+}
+.workout--running .workout__icon:nth-child(3),
+.workout--cycling .workout__icon:nth-child(3) {
+  background-image: url(speed.png);
+}
+
+.workout--running .workout__icon:nth-child(4) {
+  background-image: url(cadence.png);
+}
+.workout--cycling .workout__icon:nth-child(4) {
+  background-image: url(elevation.png);
 }
 
 .workout__value {
@@ -242,6 +262,9 @@ a:visited {
 
 .leaflet-popup .leaflet-popup-content {
   font-size: 1.5rem;
+  margin: 2rem;
+  text-wrap: nowrap;
+  width: max-content !important;
 }
 
 .leaflet-popup .leaflet-popup-tip {
