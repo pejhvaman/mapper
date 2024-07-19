@@ -66,6 +66,7 @@ class App {
     form.addEventListener('submit', this.#newWorkout.bind(this));
     inputType.addEventListener('change', this.#toggleType);
     listBtn.addEventListener('click', this.#handleBtn.bind(this));
+    containerWorkouts.addEventListener('click', this.#moveMarker.bind(this));
   }
 
   #listBtnHandler() {
@@ -184,7 +185,7 @@ class App {
     this.#renderWorkoutOnMap(workout);
 
     //rendering workout on list
-    this._renderWorkoutOnList(workout);
+    this.#renderWorkoutOnList(workout);
 
     //clearing inputs
     this.#clearInputs();
@@ -213,7 +214,7 @@ class App {
       .openPopup();
   }
 
-  _renderWorkoutOnList(workout) {
+  #renderWorkoutOnList(workout) {
     let html = `<li class="workout workout--${workout.name}" data-id="${
       workout.id
     }">
@@ -258,7 +259,22 @@ class App {
       </li>`;
     }
 
-    containerWorkouts.insertAdjacentHTML('beforeend', html);
+    form.insertAdjacentHTML('afterend', html);
+  }
+
+  #moveMarker(e) {
+    const el = e.target.closest('.workout');
+    if (!el) return;
+    const id = el.dataset.id;
+    const workout = this.#workouts.find(w => w.id === id);
+    if (!workout) return;
+    const coords = workout.coords;
+    this.#map.setView(coords, this.#zoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
   }
 
   #toggleType() {
