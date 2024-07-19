@@ -135,6 +135,13 @@ class App {
     this.#handleForm('add');
     this.#listBtnHandler();
   }
+  #clearInputs() {
+    inputDistance.value =
+      inputDuration.value =
+      inputCadence.value =
+      inputElevation.value =
+        '';
+  }
 
   #newWorkout(e) {
     e.preventDefault();
@@ -176,20 +183,14 @@ class App {
 
     this.#renderWorkoutOnMap(workout);
 
+    //rendering workout on list
+    this._renderWorkoutOnList(workout);
+
     //clearing inputs
     this.#clearInputs();
 
-    this.#handleForm('add');
-    this.#handleList('add');
-    this.#listBtnHandler();
-  }
-
-  #clearInputs() {
-    inputDistance.value =
-      inputDuration.value =
-      inputCadence.value =
-      inputElevation.value =
-        '';
+    //hide form and list and handle show/hide list btn
+    this.#hideForm();
   }
 
   #renderWorkoutOnMap(workout) {
@@ -210,6 +211,54 @@ class App {
         `${workout.name === 'running' ? '🏃‍♂️' : '🚴‍♂️'} ${workout.description}`
       )
       .openPopup();
+  }
+
+  _renderWorkoutOnList(workout) {
+    let html = `<li class="workout workout--${workout.name}" data-id="${
+      workout.id
+    }">
+          <h2 class="workout__title">${workout.description}</h2>
+          <div class="workout__details">
+            <span class="workout__icon">${
+              workout.name === 'running' ? '🏃‍♂️' : '🚴‍♂️'
+            }</span>
+            <span class="workout__value">${workout.distance}</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">${workout.duration}</span>
+            <span class="workout__unit">min</span>
+          </div>`;
+
+    if (workout.name === 'running') {
+      html += `<div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">${workout.pace}</span>
+            <span class="workout__unit">min/km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">${workout.cadence}</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>`;
+    }
+    if (workout.name === 'cycling') {
+      html += `<div class="workout__details">
+          <span class="workout__icon">⚡️</span>
+          <span class="workout__value">${workout.speed}</span>
+          <span class="workout__unit">km/h</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">⛰</span>
+          <span class="workout__value">${workout.elevGain}</span>
+          <span class="workout__unit">m</span>
+        </div>
+      </li>`;
+    }
+
+    containerWorkouts.insertAdjacentHTML('beforeend', html);
   }
 
   #toggleType() {

@@ -72,7 +72,7 @@ a:visited {
   color: var(--color-light--2);
   border: unset;
   outline: unset;
-  z-index: 20;
+  z-index: 30;
   transition: all 0.3s;
   cursor: pointer;
   font-weight: 400;
@@ -132,29 +132,9 @@ a:visited {
 }
 
 .workout__icon {
+  font-size: 1.5rem;
   margin-right: 0.2rem;
   height: 0.5rem;
-  width: 0.5rem;
-}
-
-.workout--running .workout__icon:first-child,
-.workout--cycling .workout__icon:first-child {
-  background-image: url(running.png);
-}
-.workout--running .workout__icon:nth-child(2),
-.workout--cycling .workout__icon:nth-child(2) {
-  background-image: url(duration.png);
-}
-.workout--running .workout__icon:nth-child(3),
-.workout--cycling .workout__icon:nth-child(3) {
-  background-image: url(speed.png);
-}
-
-.workout--running .workout__icon:nth-child(4) {
-  background-image: url(cadence.png);
-}
-.workout--cycling .workout__icon:nth-child(4) {
-  background-image: url(elevation.png);
 }
 
 .workout__value {
@@ -255,7 +235,7 @@ a:visited {
 /* Popup width is defined in JS using options */
 .leaflet-popup .leaflet-popup-content-wrapper {
   background-color: var(--color-dark--1);
-  color: var(--color-light--2);
+  color: var(--color-light--3);
   border-radius: 5px;
   padding-right: 0.6rem;
 }
@@ -291,7 +271,7 @@ a:visited {
 }
 @media (min-width: 768px) {
   html {
-    font-size: 62%;
+    font-size: 65%;
   }
   .list {
     width: 60%;
