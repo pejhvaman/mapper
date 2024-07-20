@@ -9,6 +9,7 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 const list = document.querySelector('.list');
 const listBtn = document.querySelector('.list-btn');
+const controls = document.querySelector('.controls');
 
 class Workout {
   id = (Date.now() + '').slice(-10);
@@ -22,7 +23,7 @@ class Workout {
   setDescription() {
     // prettier-ignore
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    this.description = `${this.name[0].toUpperCase()}${this.name.slice(1)} ${
+    this.description = `${this.name[0].toUpperCase()}${this.name.slice(1)} on ${
       months[this.date.getMonth()]
     } ${this.date.getDate()}`;
     return this.description;
@@ -139,6 +140,8 @@ class App {
     //check classes for show/hide list btn
     this.#listBtnHandler();
     this.#clearInputs();
+    //handle delete all bbutton or click on map to start workout message
+    this._handleDeleteAllBtn();
   }
 
   #hideForm() {
@@ -271,8 +274,7 @@ class App {
             <span class="workout__icon">🦶🏼</span>
             <span class="workout__value">${workout.cadence}</span>
             <span class="workout__unit">spm</span>
-          </div>
-        </li>`;
+          </div>`;
     }
     if (workout.name === 'cycling') {
       html += `<div class="workout__details">
@@ -284,9 +286,15 @@ class App {
           <span class="workout__icon">⛰</span>
           <span class="workout__value">${workout.elevGain}</span>
           <span class="workout__unit">m</span>
-        </div>
-      </li>`;
+        </div>`;
     }
+    html += `<div class="workout__details">
+              <span class="workout__icon workout__delete">❌delete</span>
+            </div>
+            <div class="workout__details">
+              <span class="workout__icon workout__edit">✏edit</span>
+            </div>
+          </li>`;
 
     form.insertAdjacentHTML('afterend', html);
   }
@@ -319,10 +327,33 @@ class App {
     if (this.#listBtnHandler()) {
       this.#handleList('remove');
       this.#listBtnHandler();
+      //handle delete all bbutton or click on map to start workout message
+      this._handleDeleteAllBtn();
     } else {
       this.#handleList('add');
       this.#handleForm('add');
       this.#listBtnHandler();
+    }
+  }
+
+  _handleDeleteAllBtn() {
+    if (!this.#workouts?.length) {
+      //show a message to start workout
+    } else {
+      // show delete insert delete all button
+      this._insertDeleteAllBtn();
+    }
+  }
+  _insertDeleteAllBtn() {
+    const deleteAllBtn = `<li class="controls">
+            <div class="controls--deleteAll">
+              <span class="controls--deleteAll__icon">❌</span>
+              <span class="controls--deleteAll__title">delete all</span>
+            </div>
+          </li>`;
+    if (!containerWorkouts.querySelector('.controls')) {
+      form.insertAdjacentHTML('beforebegin', deleteAllBtn);
+      // controls.addEventListener('click', this._handleControls.bind(this));
     }
   }
 }

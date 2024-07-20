@@ -103,7 +103,8 @@ a:visited {
   width: 0;
 }
 
-.workout {
+.workout,
+.controls {
   background-color: var(--color-dark--2);
   border-radius: 5px;
   padding: 1.5rem 2.25rem;
@@ -113,6 +114,14 @@ a:visited {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0.75rem 1.5rem;
 }
+.workouts .controls {
+  grid-template-columns: 1fr;
+  text-align: center;
+  width: 60%;
+  margin: auto auto 1.75rem auto;
+  font-size: 1.4rem;
+}
+
 .workout--running {
   border-left: 5px solid var(--color-brand--2);
 }
@@ -147,6 +156,13 @@ a:visited {
   color: var(--color-light--1);
   text-transform: uppercase;
   font-weight: 800;
+}
+.workout__delete {
+  transition: all ease 0.3s;
+}
+.workout__delete:hover {
+  color: var(--color-brand--1);
+  opacity: 0.8;
 }
 
 .form {
