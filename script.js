@@ -346,9 +346,13 @@ class App {
   }
   _insertDeleteAllBtn() {
     const deleteAllBtn = `<li class="controls">
-            <div class="controls--deleteAll">
+            <div class="controls--detail controls--deleteAll">
               <span class="controls--deleteAll__icon">❌</span>
               <span class="controls--deleteAll__title">delete all</span>
+            </div>
+            <div class="controls--detail controls--sortBy">
+              <span class="controls--sortBy__icon">📝</span>
+              <span class="controls--sortBy__title">sort by</span>
             </div>
           </li>`;
     if (!containerWorkouts.querySelector('.controls')) {
