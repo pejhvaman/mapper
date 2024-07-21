@@ -122,6 +122,7 @@ a:visited {
   background-color: unset;
   cursor: auto;
   width: fit-content;
+  margin-left: auto;
 }
 
 .controls--detail {
