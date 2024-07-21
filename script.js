@@ -217,7 +217,9 @@ class App {
   _getLocalStorage() {
     const data = JSON.parse(localStorage.getItem('workouts'));
     if (!data) return;
-    this.#workouts = data;
+
+    this._reBuildWorkouts(data);
+
     this.#workouts.forEach(w => this.#renderWorkoutOnList(w));
   }
 
@@ -297,6 +299,9 @@ class App {
           </li>`;
 
     form.insertAdjacentHTML('afterend', html);
+
+    const deleteWorkoutBtn = document.querySelector('.workout__delete');
+    deleteWorkoutBtn.addEventListener('click', this._deleteWorkout.bind(this));
   }
 
   #moveMarker(e) {
@@ -359,6 +364,56 @@ class App {
       form.insertAdjacentHTML('beforebegin', deleteAllBtn);
       // controls.addEventListener('click', this._handleControls.bind(this));
     }
+  }
+
+  _deleteWorkout(e) {
+    const el = e.target.closest('.workout');
+    if (!el) return;
+    const id = el.dataset.id;
+    const workout = this.#workouts.find(w => w.id === id);
+    if (!workout) return;
+    this.#workouts.splice(
+      this.#workouts.findIndex(w => w.id === id),
+      1
+    );
+
+    const workouts = document.querySelectorAll('.workout');
+    if (!workouts) return;
+    workouts.forEach(w => w.remove());
+
+    //needs to re-build objects from localstorage
+
+    console.log(this.#workouts);
+    this.#workouts.forEach(w => {
+      this.#renderWorkoutOnMap(w);
+      this.#renderWorkoutOnList(w);
+    });
+    this._setLocalStorage();
+    location.reload();
+    // this.#getPosition();
+  }
+
+  _reBuildWorkouts(data) {
+    data.forEach(obj => {
+      let workout;
+      if (obj.name === 'running') {
+        workout = new Running(
+          obj.coords,
+          obj.distance,
+          obj.duration,
+          obj.cadence
+        );
+      }
+      if (obj.name === 'cycling') {
+        workout = new Cycling(
+          obj.coords,
+          obj.distance,
+          obj.duration,
+          obj.elevGain
+        );
+      }
+      this.#workouts.push(workout);
+    });
   }
 }
 const app = new App();
