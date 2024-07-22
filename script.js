@@ -31,7 +31,7 @@ class Workout {
   //public interface
   click() {
     this.clicks++;
-    console.log(this.clicks);
+    // console.log(this.clicks);
   }
 }
 
@@ -302,14 +302,61 @@ class App {
 
     const deleteWorkoutBtn = document.querySelector('.workout__delete');
     deleteWorkoutBtn.addEventListener('click', this._deleteWorkout.bind(this));
+
+    const editBtn = document.querySelector('.workout__edit');
+    editBtn.addEventListener('click', this._editWorkout.bind(this));
   }
 
-  #moveMarker(e) {
+  _editWorkout(e) {
     const el = e.target.closest('.workout');
     if (!el) return;
     const id = el.dataset.id;
     const workout = this.#workouts.find(w => w.id === id);
     if (!workout) return;
+    // parameters to edit
+    const params = [...el.querySelectorAll('.workout__details')].splice(0, 4);
+
+    //to use in input's placeholder
+    let paramsTitle = ['distance', 'duration'];
+    if (workout.name === 'running')
+      paramsTitle = [...paramsTitle, 'pace', 'cadence'];
+    if (workout.name === 'cycling')
+      paramsTitle = [...paramsTitle, 'speed', 'elev Gain'];
+
+    params.forEach((p, i) => {
+      const workoutValue = p.querySelector('.workout__value');
+      if (!workoutValue) return;
+      workoutValue.remove();
+      const workoutIcon = p.querySelector('.workout__icon');
+      const input = `<input class="edit-input" data-num="${i}" placeholder="${paramsTitle[i]}">`;
+      workoutIcon.insertAdjacentHTML('afterend', input);
+      //remove edit btn
+
+      //insert submit editted values
+
+      //change the workout in workouts
+
+      //set back real workout
+    });
+  }
+
+  // _workoutFinder(e) {
+  //   const el = e.target.closest('.workout');
+  //   if (!el) return;
+  //   const id = el.dataset.id;
+  //   const workout = this.#workouts.find(w => w.id === id);
+  //   if (!workout) return;
+  //   return {id, workout};
+  // }
+
+  #moveMarker(e) {
+    const el = e.target.closest('.workout');
+    if (!el) return;
+    // console.log(el);
+    const id = el.dataset.id;
+    const workout = this.#workouts.find(w => w.id === id);
+    if (!workout) return;
+    // console.log(workout);
     const coords = workout.coords;
     this.#map.setView(coords, this.#zoomLevel, {
       animate: true,
@@ -318,7 +365,7 @@ class App {
       },
     });
     //working with pubkic interface
-    // workout.click();
+    workout.click();
     //local storage objects had lost their prototype
   }
 
