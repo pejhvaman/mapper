@@ -12,7 +12,7 @@ const listBtn = document.querySelector('.list-btn');
 const controls = document.querySelector('.controls');
 
 class Workout {
-  id = (Date.now() + '').slice(-10);
+  id = (Date.now() + '').slice(-10) + Math.random().toFixed(4);
   date = new Date();
   clicks = 0;
   constructor(coords, distance, duration) {
@@ -249,6 +249,7 @@ class App {
   }
 
   #renderWorkoutOnList(workout) {
+    console.log(workout);
     let html = `<li class="workout workout--${workout.name}" data-id="${
       workout.id
     }">
@@ -441,6 +442,9 @@ class App {
   }
 
   _reBuildWorkouts(data) {
+    //BUG
+    //objects are made in the same time and their id will be the same this is a bug and try object.create
+    //I solve this bug by adding a random number to the id
     data.forEach(obj => {
       let workout;
       if (obj.name === 'running') {
