@@ -12,7 +12,7 @@ const listBtn = document.querySelector('.list-btn');
 const controls = document.querySelector('.controls');
 
 class Workout {
-  id = (Date.now() + '').slice(-10) + Math.random().toFixed(4);
+  id = +(Date.now() + '').slice(-10) + Math.random().toFixed(4);
   date = new Date();
   clicks = 0;
   constructor(coords, distance, duration) {
