@@ -392,6 +392,9 @@ class App {
   _handleDeleteAllBtn() {
     if (!this.#workouts?.length) {
       //show a message to start workout
+      // const msgEl = document.createElement('p');
+      // msgEl.textContent = 'Start to workout';
+      // list.append(msgEl);
     } else {
       // show delete insert delete all button
       this._insertDeleteAllBtn();
@@ -410,6 +413,8 @@ class App {
           </li>`;
     if (!containerWorkouts.querySelector('.controls')) {
       form.insertAdjacentHTML('beforebegin', deleteAllBtn);
+      const delAllBtn = document.querySelector('.controls--deleteAll');
+      delAllBtn.addEventListener('click', this.reset.bind(this));
       // controls.addEventListener('click', this._handleControls.bind(this));
     }
   }
@@ -442,7 +447,7 @@ class App {
   }
 
   _reBuildWorkouts(data) {
-    //BUG
+    //fixed bug
     //objects are made in the same time and their id will be the same this is a bug and try object.create
     //I solve this bug by adding a random number to the id
     data.forEach(obj => {
